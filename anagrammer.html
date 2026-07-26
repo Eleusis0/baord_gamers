@@ -11,45 +11,159 @@
       crossorigin="anonymous"
     />
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Exo+2:wght@300;400&display=swap');
+      
+      :root {
+        --neon-cyan: #00FFFF;
+        --neon-magenta: #FF00FF;
+        --neon-purple: #B084FF;
+      }
+
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Exo 2', Arial, sans-serif;
         text-align: center;
-        background-image: url("images/scrabble_background.jpg");
+        background: #050714;
+        background-image: 
+          radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+          url("images/scrabble_background.jpg");
         background-size: cover;
         background-attachment: fixed;
+        background-blend-mode: overlay;
         color: #fff;
+        overflow-x: hidden;
       }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(45deg, transparent 30%, rgba(0,255,255,0.03) 50%, transparent 70%);
+        animation: scan 8s linear infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes scan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+
       #anagram-container {
         max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        background: rgba(0, 0, 0, 0.7);
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px #aaa;
+        margin: 60px auto;
+        padding: 30px;
+        background: rgba(5, 7, 20, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 2px solid var(--neon-cyan);
+        box-shadow: 
+          0 0 20px var(--neon-cyan),
+          0 0 40px rgba(0, 255, 255, 0.3),
+          inset 0 0 20px rgba(0, 255, 255, 0.1);
+        position: relative;
+        z-index: 2;
+        animation: pulse 3s ease-in-out infinite;
       }
-      input,
-      button {
+
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1); }
+        50% { box-shadow: 0 0 30px var(--neon-magenta), 0 0 60px rgba(255, 0, 255, 0.3), inset 0 0 30px rgba(255, 0, 255, 0.1); }
+      }
+
+      h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        color: var(--neon-cyan);
+        text-shadow: 
+          0 0 5px var(--neon-cyan),
+          0 0 10px var(--neon-cyan),
+          0 0 20px var(--neon-cyan);
+        margin-bottom: 25px;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        font-family: 'Orbitron', sans-serif;
+        color: var(--neon-purple);
+        text-shadow: 0 0 8px var(--neon-purple);
+      }
+
+      input {
         margin-top: 10px;
-        padding: 10px;
+        padding: 12px;
         width: 80%;
         font-size: 16px;
-        border-radius: 5px;
-        border: none;
+        border-radius: 8px;
+        border: 2px solid var(--neon-purple);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(176, 132, 255, 0.3);
       }
+
+      input:focus {
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px rgba(0, 255, 255, 0.4);
+      }
+
       button {
-        background-color: #28a745;
+        margin-top: 15px;
+        padding: 12px;
+        width: 80%;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 2px solid var(--neon-magenta);
+        background: linear-gradient(45deg, rgba(255,0,255,0.2), rgba(0,255,255,0.2));
         color: white;
         cursor: pointer;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 500;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+        text-transform: uppercase;
       }
+
       button:hover {
-        background-color: #218838;
+        background: linear-gradient(45deg, var(--neon-magenta), var(--neon-cyan));
+        box-shadow: 0 0 25px var(--neon-magenta), 0 0 40px rgba(255, 0, 255, 0.6);
+        transform: translateY(-2px);
       }
+
       .hidden {
         display: none;
       }
+
+      #anagram-list {
+        list-style: none;
+        padding: 0;
+      }
+
+      #anagram-list li {
+        padding: 8px;
+        margin: 5px 0;
+        background: rgba(0, 255, 255, 0.05);
+        border-left: 3px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        text-shadow: 0 0 5px var(--neon-cyan);
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(-10px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+
       footer {
-        margin-top: 20px;
-        color: #ccc;
+        margin-top: 40px;
+        color: var(--neon-purple);
+        font-size: 14px;
+        text-shadow: 0 0 5px var(--neon-purple);
+        position: relative;
+        z-index: 2;
       }
     </style>
   </head>
@@ -79,12 +193,7 @@
       <p>© 2024 ANAGRAMMDAYS</p>
       <p>
         Développé par:
-        <br> OUEDRAOGO YANN <br/>
-        <br> ZOUGOURY DONALD <br/>
-        <br> LOARI MOUMOUNI <br/>
-      </p>
-      <p> modifié à titre personnel par:
-        <br> TOUGMA juste <br/>
+        <br> Juste TOUGMA <br/>
       </p>
     </footer>
 
@@ -122,4 +231,4 @@
       }
     </script>
   </body>
-</html>
+</html>            
